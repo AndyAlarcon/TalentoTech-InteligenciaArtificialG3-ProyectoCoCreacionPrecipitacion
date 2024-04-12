@@ -3,6 +3,7 @@ from sodapy import Socrata
 import datetime
 from dateutil.relativedelta import relativedelta    
 import pandas as pd
+import numpy as np
 
 #Identificador interno del conjunto de datos.
 datasetId = "s54a-sgyg"
@@ -59,3 +60,30 @@ df = df.dropna(axis=0,how='any')
 df.info()
 
 
+# Preparación de datos para gráfico de barras
+var=list((df['valorobservado']))
+valores=[]
+for i in range(len(var)):
+  valores.append(float(var[i]))
+
+valores_a=np.array(valores)
+
+## Descriptivas básicas
+#Media
+print('El valor medio de precipitación en mm para el departamento de Boyacá en los últimos 12 meses es: ', round(np.mean(valores_a),3))
+#Mediana
+print('Para la precipitación en mm tomada en el departamento de Boyacá en los últimos 12 meses, el valor que se ubica justo en el medio es: ', round(np.median(valores_a),3))
+#Desviación estándar
+print('Para la precipitación en mm tomada en el departamento de Boyacá en los últimos 12 meses, la variación de los datos respecto al valor medio es : ', round(np.std(valores_a),3))
+#Valor máximo
+print('Para la precipitación en mm tomada en el departamento de Boyacá en los últimos 12 meses, el valor máximo observado es: ',round(np.max(valores_a),3))
+#Valor mínimo
+print('Para la precipitación en mm tomada en el departamento de Boyacá en los últimos 12 meses, el valor mínimo observado es: ',round(np.min(valores_a),3))
+#Rango
+print('Para la precipitación en mm tomada en el departamento de Boyacá en los últimos 12 meses, la diferencia entre el valor máximo y el valor mínimo observado es: ',round(np.max(valores_a),3)-round(np.min(valores_a),3))
+
+
+var=list((df['municipio']))
+municipios=[]
+for i in range(len(var)):
+  municipios.append(str(var[i]))
