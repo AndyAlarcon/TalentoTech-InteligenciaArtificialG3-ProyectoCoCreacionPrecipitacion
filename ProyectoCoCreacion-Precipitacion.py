@@ -4,6 +4,7 @@ import datetime
 from dateutil.relativedelta import relativedelta    
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 #Identificador interno del conjunto de datos.
 datasetId = "s54a-sgyg"
@@ -87,3 +88,23 @@ var=list((df['municipio']))
 municipios=[]
 for i in range(len(var)):
   municipios.append(str(var[i]))
+
+  #total de precipitación
+total_precipitación = sum(valores_a)
+
+#Grafica del histograma de precipitación por municipio
+plt.bar(municipios, valores_a)
+
+plt.text(0.5, 1.05 * max(valores_a),f'Total precipitación en Boyacá: {total_precipitación}',ha='center', fontsize=12, fontweight='bold')
+
+# plt.hist(valores_a, bins=20, edgecolor='purple')
+plt.xlabel('Municipios')
+plt.ylabel('Precipitación en mm')
+# plt.hist(valores_a, bins=10)
+# plt.axvline(np.mean(valores_a), ymin=0.0, ymax=0.9,color='r')
+plt.title('Histograma de los valores observados')
+plt.grid(True)
+plt.show()
+
+# meses = df['valorobservado'].unique()
+# print(valores)
