@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import folium
 
 #Identificador interno del conjunto de datos.
 datasetId = "s54a-sgyg"
@@ -108,3 +109,25 @@ plt.show()
 
 # meses = df['valorobservado'].unique()
 # print(valores)
+
+## Mapa de las estaciones que registraron datos de precipitación
+
+df['latitud'] = pd.to_numeric(df['latitud'], errors='coerce')
+df['longitud'] = pd.to_numeric(df['longitud'], errors='coerce')
+
+mapa = folium.Map(
+    location=[
+        df['latitud'].mean(), 
+        df['longitud'].mean()
+    ], 
+    zoom_start=12
+)
+
+# Añadir un marcador por cada estación
+for indice, fila in df.iterrows():
+    folium.Marker(
+        location=[fila['latitud'], fila['longitud']],
+        popup=fila['nombreestacion']
+    ).add_to(mapa)
+
+mapa.save('mapa.html')
