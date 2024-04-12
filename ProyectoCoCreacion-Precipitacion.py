@@ -19,13 +19,13 @@ totalRegistros = cliente.get(datasetId, select="COUNT(*)")[0]["COUNT"]
 # limiteInferior = (datetime.datetime.now() - datetime.timedelta(days=365)).date()
 
 #Aquí utilizando la librería dateutil.relativedelta, ahora se filtra por meses
-limiteInferior = (datetime.datetime.now() - relativedelta(months=3)).date()
+limiteInferior = (datetime.datetime.now() - relativedelta(months=12)).date()
 
 #Se define el valor del departamento a filtrar.
 Departamento = "BOYACÁ"
 
 #Se construye el filtro para la petición al API
-consulta = f"departamento = '{Departamento}' AND fechaobservacion >= '{limiteInferior}'"
+consulta = f"departamento = '{Departamento}' AND fechaobservacion >= '{limiteInferior}' AND valorobservado <> 0"
 
 if(int(totalRegistros) > 1000000):
     print("Inicio recuperación de datos" + str(datetime.datetime.now()))
@@ -50,9 +50,12 @@ df['fechaobservacion'] = pd.to_datetime(df['fechaobservacion'])
 municipios = df['municipio'].unique()
 print(municipios)
 
+# valores = df['valorobservado'].unique()
+# print(valores)
+
 #Se realiza una verificación de los datos antes de aplicar una limpieza de registros con datos nulos
 df.info()
 df = df.dropna(axis=0,how='any')
 df.info()
 
-# df.info()
+
