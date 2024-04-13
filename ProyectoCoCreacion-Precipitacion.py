@@ -107,27 +107,41 @@ plt.title('Histograma de los valores observados')
 plt.grid(True)
 plt.show()
 
-# meses = df['valorobservado'].unique()
-# print(valores)
+meses = df['valorobservado'].unique()
+print(valores)
 
 ## Mapa de las estaciones que registraron datos de precipitación
 
-df['latitud'] = pd.to_numeric(df['latitud'], errors='coerce')
-df['longitud'] = pd.to_numeric(df['longitud'], errors='coerce')
+# print(df['municipio'].unique())
 
-mapa = folium.Map(
-    location=[
-        df['latitud'].mean(), 
-        df['longitud'].mean()
-    ], 
-    zoom_start=12
-)
+def GenerarMapasPorMunicipio(data_frame):
+    for municipio in data_frame['municipio'].unique():
+        df_municipio = df[df['municipio'] == municipio]
+        # estaciones_municipio = df_municipio['nombreestacion'].unique()
 
-# Añadir un marcador por cada estación
-for indice, fila in df.iterrows():
-    folium.Marker(
-        location=[fila['latitud'], fila['longitud']],
-        popup=fila['nombreestacion']
-    ).add_to(mapa)
+        # print(estaciones_municipio)
 
-mapa.save('mapa.html')
+        df_municipio['latitud'] = pd.to_numeric(df_municipio['latitud'], errors='coerce')
+        df_municipio['longitud'] = pd.to_numeric(df_municipio['longitud'], errors='coerce')
+
+        mapa = folium.Map(
+            location=[
+                df_municipio['latitud'].mean(), 
+                df_municipio['longitud'].mean()
+            ], 
+            zoom_start=12
+        )
+
+        # Añadir un marcador por cada estación
+        for indice, fila in df_municipio.iterrows():
+            folium.Marker(
+                location=[fila['latitud'], fila['longitud']],
+                popup=fila['nombreestacion']
+            ).add_to(mapa)
+        
+        mapa.save(f"./mapas/mapa_{municipio}.html")
+
+GenerarMapasPorMunicipio(df)
+
+
+
