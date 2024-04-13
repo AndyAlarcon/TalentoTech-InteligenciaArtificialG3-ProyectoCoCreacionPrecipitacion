@@ -107,9 +107,6 @@ plt.title('Histograma de los valores observados')
 plt.grid(True)
 plt.show()
 
-meses = df['valorobservado'].unique()
-print(valores)
-
 ## Mapa de las estaciones que registraron datos de precipitación
 
 # print(df['municipio'].unique())
